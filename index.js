@@ -53,6 +53,76 @@ const ManagerData = [
     },
 ]
 
+const engineerData = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'Enter the engineer name:',
+        validate: (input) => {
+            return input.trim() !== '' ? true : 'Engineer name cannot be empty.'
+        }
+    },
+    {
+        type: 'number',
+        name: 'id',
+        message: 'Enter engineer id:',
+        validate: (input) => {
+            return (!isNaN(input) && input.trim() !== '') ? true : 'Please enter a valid number for id.'
+        }
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'Please enter your Engineer email',
+        validate: function(input){
+            // Email validation using regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            return emailRegex.test(input) ? true : 'Please enter a valid email.'
+        }
+    },
+    {
+        type: 'input',
+        name: 'GitHub',
+        message: 'Enter Engineer GitHub',
+        validate: (input) => {
+            return input.trim() !== '' ? true: 'Engineer gitHub cannot be empty.'
+        }
+    },
+]
+
+const internData = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'What is the name of intern?',
+        validate: (input) => {
+            return input.trim() !== '' ? true: 'Please enter a valid name for intern.'
+        }
+    },
+    {
+        type: 'number',
+        name: 'id',
+        message: 'What is the id for intern?.',
+        validate: (input) => {
+            return(!isNaN(input) && input.trim() !== '') ? true : 'Please enter a valid id for intern.'
+        }
+    },
+    {
+        type: 'input',
+        name: 'Email',
+        message: 'Please enter email for intern',
+        validate: function(input){
+            // Email validation using regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(input) ? true : 'Please enter a valid email.'
+        }
+    },
+    {
+        type: 'in'
+    }
+]
+
+
 
 
 const menuItemsData = [
@@ -63,6 +133,7 @@ const menuItemsData = [
         choices: ['\n Add Engineer', '\n Add Intern', '\n Finish building app']
     }
 ]
+
 
 // function getInfo(){
 //     inquirer
