@@ -30,7 +30,7 @@ const ManagerData = [
         name: 'id',
         message: 'What is the team manager\'s id?', 
         validate: (input) => {
-            return (!isNaN(input) && input.trim() !== '') ? true: 'Please enter a valid number for id.'
+            return (!isNaN(input)) ? true: 'Please enter a valid number for id.'
         }
     },
     {
@@ -48,7 +48,7 @@ const ManagerData = [
         name: 'officeNumber',
         message: 'What is the team manager\'s office number',
         validate: (input) => {
-            return (!isNaN(input) && input.trim() !== '') ? true: 'Please enter a valid number'
+            return (!isNaN(input)) ? true: 'Please enter a valid number'
         }
     },
 ]
@@ -67,7 +67,7 @@ const engineerData = [
         name: 'id',
         message: 'Enter engineer id:',
         validate: (input) => {
-            return (!isNaN(input) && input.trim() !== '') ? true : 'Please enter a valid number for id.'
+            return (!isNaN(input)) ? true : 'Please enter a valid number for id.'
         }
     },
     {
@@ -76,7 +76,7 @@ const engineerData = [
         message: 'Please enter your Engineer email',
         validate: function(input){
             // Email validation using regex
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(input) ? true : 'Please enter a valid email.'
         }
     },
@@ -104,7 +104,7 @@ const internData = [
         name: 'id',
         message: 'What is the id for intern?.',
         validate: (input) => {
-            return(!isNaN(input) && input.trim() !== '') ? true : 'Please enter a valid id for intern.'
+            return(!isNaN(input)) ? true : 'Please enter a valid id for intern.'
         }
     },
     {
@@ -132,7 +132,7 @@ const menuItemsData = [
         type: 'list',
         name: 'menuItem',
         message: 'What do you want to do next?',
-        choices: ['\n Add Engineer', '\n Add Intern', '\n Finish building app']
+        choices: ['Add an Engineer', 'Add an Intern', 'Finish building the team']
     }
 ]
 
@@ -152,19 +152,47 @@ function selectMenuItems(){
     return inquirer.prompt(menuItemsData)
 }
 
-
 function startApp(){
     getManagerInfo()
         .then(managerInfo =>{
-            //console.log(managerInfo)
             const manager = new Manager(managerInfo.name, managerInfo.id, managerInfo.email, managerInfo.officeNumber)
-            console.log(manager)
-        })
+            teamMembers.push(manager);
 
-        function createTeamMembers(){
+            let selectedMenuItem = '';
 
-        }
-    // console.log('The app has started')
+            const createTeamMembers = () => {
+                selectMenuItems()
+                .then((menu) => {
+                    selectedMenuItem = menu.menuItem;
+
+                    if(selectedMenuItem === 'Add an Engineer'){
+                        return getEngineerInfo();
+                    }else if(selectedMenuItem === 'Add an Intern') {
+                        return getInternInfo();
+                    }
+                })
+                .then((gatheredInfo) =>{
+                    if(selectedMenuItem === 'Add an Engineer'){
+                        const engineer = new Engineer (gatheredInfo.name, gatheredInfo.id, gatheredInfo.email, gatheredInfo.github);
+                        teamMembers.push(engineer);
+                    } else if(selectedMenuItem === 'Add an Intern'){
+                        const intern = new Intern(gatheredInfo.name, gatheredInfo.id, gatheredInfo.email, gatheredInfo.school);
+                        teamMembers.push(intern);
+                    }
+                    if(selectedMenuItem === 'Finish building the team'){
+                    
+                        const htmlContent = render(teamMembers);
+
+                        fs.writeFileSync(outputPath, htmlContent);
+                        console.log(`Team HTML has been gathered at ${outputPath}`);
+                    }
+                    else {
+                        createTeamMembers();
+                    }
+                });
+            };
+            createTeamMembers();
+        })  
 }
 
 startApp()
