@@ -118,12 +118,14 @@ const internData = [
         }
     },
     {
-        type: 'in'
-    }
+        type: 'input',
+        name: 'school',
+        message: 'What is the school of your intern?',
+        validate: (input) => {
+            return input.trim() !== '' ? true : 'Intern school cannot be empty.'
+        }
+    },
 ]
-
-
-
 
 const menuItemsData = [
     {
@@ -134,24 +136,19 @@ const menuItemsData = [
     }
 ]
 
-
-// function getInfo(){
-//     inquirer
-//     .prompt(ManagerData)
-//     .then((data) =>{
-
-//         const Manager1 = new Manager(data.name, data.id, data.email, data.officeNumber)
-//         console.log(Manager1)
-//     })
-// }
-//getInfo()
-
-// 
 function getManagerInfo(){
     return inquirer.prompt(ManagerData)
 }
 
-function selectMenuItemsData(){
+function getEngineerInfo(){
+    return inquirer.prompt(engineerData)
+}
+
+function getInternInfo(){
+    return inquirer.prompt(internData)
+}
+
+function selectMenuItems(){
     return inquirer.prompt(menuItemsData)
 }
 
@@ -173,8 +170,18 @@ function startApp(){
 startApp()
 
 
+// function getInfo(){
+//     inquirer
+//     .prompt(ManagerData)
+//     .then((data) =>{
 
+//         const Manager1 = new Manager(data.name, data.id, data.email, data.officeNumber)
+//         console.log(Manager1)
+//     })
+// }
+//getInfo()
 
+// 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 // create employee, engineer, intern, manager classes so that it will pass the test
 // create the inquiirer prompt to ask for manager info
